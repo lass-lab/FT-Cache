@@ -1,4 +1,4 @@
-name: cosmoflow
+name: ft-cache-env
 channels:
   - conda-forge
   - anaconda
