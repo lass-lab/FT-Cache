@@ -1,5 +1,7 @@
 # Fault Tolerant AI Cache (FT_Cache)
 
+[![DOI](https://zenodo.org/badge/844795297.svg)](https://zenodo.org/doi/10.5281/zenodo.13347303)
+
 ## Overview
 
 FT_Cache is a fault-tolerant distributed cache designed to optimize AI workloads by ensuring data availability and reliability in high-performance computing environments. The system is available in two versions:
