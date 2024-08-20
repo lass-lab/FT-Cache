@@ -1,0 +1,1 @@
+/apps/compiler/gcc/10.2.0/bin/gcc  -fcommon -g CMakeFiles/basic_test.dir/basic_test.c.o -o basic_test   -L/scratch/s5104a21/lib/mercury2/lib  -L/scratch/s5104a21/lib/log4c/lib 

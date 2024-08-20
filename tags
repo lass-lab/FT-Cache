@@ -1,0 +1,148 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+FILE_COUNT	tests/basic_test.c	/^#define FILE_COUNT /;"	d	file:
+FT_Cache_CLIENT	src/ftc_client.cpp	/^#define FT_Cache_CLIENT /;"	d	file:
+FT_Cache_LOG_DIR	src/ftc_logging.h	/^#define FT_Cache_LOG_DIR /;"	d
+FT_Cache_LOG_LEVEL	src/ftc_logging.h	/^#define FT_Cache_LOG_LEVEL /;"	d
+FT_Cache_LOG_PREFIX	src/ftc_logging.h	/^#define FT_Cache_LOG_PREFIX /;"	d
+FT_Cache_SERVER	src/ftc_server.cpp	/^#define FT_Cache_SERVER /;"	d	file:
+FT_Cache_VERSION	src/ftc_internal.h	/^#define FT_Cache_VERSION /;"	d
+FT_Cache_finalize_logging	src/ftc_logging.c	/^void FT_Cache_finalize_logging()$/;"	f
+L4C_ALERT	src/ftc_logging.h	/^#define L4C_ALERT(/;"	d
+L4C_CAT_NAME	src/ftc_logging.h	/^#define L4C_CAT_NAME /;"	d
+L4C_CRIT	src/ftc_logging.h	/^#define L4C_CRIT(/;"	d
+L4C_DEBUG	src/ftc_logging.h	/^#define L4C_DEBUG(/;"	d
+L4C_ERR	src/ftc_logging.h	/^#define L4C_ERR(/;"	d
+L4C_FATAL	src/ftc_logging.h	/^#define L4C_FATAL(/;"	d
+L4C_INFO	src/ftc_logging.h	/^#define L4C_INFO(/;"	d
+L4C_LOG_AT_PRIORITY	src/ftc_logging.h	/^#define L4C_LOG_AT_PRIORITY(/;"	d
+L4C_LOG_DIR	src/ftc_logging.h	/^#define L4C_LOG_DIR /;"	d
+L4C_LOG_NAME_PREFIX	src/ftc_logging.h	/^#define L4C_LOG_NAME_PREFIX /;"	d
+L4C_NOTICE	src/ftc_logging.h	/^#define L4C_NOTICE(/;"	d
+L4C_PERROR	src/ftc_logging.h	/^#define L4C_PERROR(/;"	d
+L4C_TRACE	src/ftc_logging.h	/^#define L4C_TRACE(/;"	d
+L4C_WARN	src/ftc_logging.h	/^#define L4C_WARN(/;"	d
+MAP_OR_FAIL	src/ftc_internal.h	/^#define MAP_OR_FAIL(/;"	d
+REAL_DECL	src/ftc_internal.h	/^#define REAL_DECL(/;"	d
+WRAP_DECL	src/ftc_internal.h	/^#define WRAP_DECL(/;"	d
+_FT_Cache_LOGGING_H_	src/ftc_logging.h	/^#define _FT_Cache_LOGGING_H_$/;"	d
+__FT_Cache_DATA_MOVER_INTERNAL_H__	src/ftc_data_mover_internal.h	/^#define __FT_Cache_DATA_MOVER_INTERNAL_H__$/;"	d
+__FT_Cache_INTERNAL_H__	src/ftc_internal.h	/^#define __FT_Cache_INTERNAL_H__$/;"	d
+__FT_Cache_RPC_ENGINE_INTERNAL_H__	src/ftc_comm.h	/^#define __FT_Cache_RPC_ENGINE_INTERNAL_H__$/;"	d
+addr	src/ftc_server.cpp	/^	hg_addr_t addr;$/;"	m	struct:ftc_lookup_arg	file:
+address_cache	src/ftc_comm_client.cpp	/^std::map<int, std::string> address_cache;$/;"	v
+buffer	src/ftc_comm.cpp	/^    void *buffer;$/;"	m	struct:ftc_rpc_state	file:
+buffer	src/ftc_comm_client.cpp	/^    void *buffer;$/;"	m	struct:ftc_rpc_state	file:
+bulk_handle	src/ftc_comm.cpp	/^    hg_bulk_t bulk_handle;$/;"	m	struct:ftc_rpc_state	file:
+bulk_handle	src/ftc_comm_client.cpp	/^    hg_bulk_t bulk_handle;$/;"	m	struct:ftc_rpc_state	file:
+cleanup_files	tests/basic_test.c	/^void cleanup_files(uint32_t filecount){$/;"	f
+close	src/wrappers.c	/^int WRAP_DECL(close)(int fd)$/;"	f
+context	src/ftc_server.cpp	/^	hg_context_t *context;$/;"	m	struct:ftc_lookup_arg	file:
+data_cond	src/ftc_data_mover.cpp	/^pthread_cond_t data_cond = PTHREAD_COND_INITIALIZER;$/;"	v
+data_mutex	src/ftc_data_mover.cpp	/^pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;$/;"	v
+data_queue	src/ftc_data_mover.cpp	/^queue<string> data_queue;$/;"	v
+done	src/ftc_comm_client.cpp	/^static hg_bool_t done = HG_FALSE;$/;"	v	file:
+done_cond	src/ftc_comm_client.cpp	/^static pthread_cond_t done_cond = PTHREAD_COND_INITIALIZER;$/;"	v	file:
+done_mutex	src/ftc_comm_client.cpp	/^static pthread_mutex_t done_mutex = PTHREAD_MUTEX_INITIALIZER;$/;"	v	file:
+fd_map	src/ftc_client.cpp	/^std::map<int,std::string> fd_map;$/;"	v
+fd_redir_map	src/ftc_client.cpp	/^std::map<int, int > fd_redir_map;$/;"	v
+fd_to_path	src/ftc_data_mover.cpp	/^map<int,string> fd_to_path;$/;"	v
+fopen	src/wrappers.c	/^FILE *WRAP_DECL(fopen)(const char *path, const char *mode)$/;"	f
+fopen64	src/wrappers.c	/^FILE *WRAP_DECL(fopen64)(const char *path, const char *mode)$/;"	f
+g_disable_redirect	src/ftc_client.cpp	/^bool g_disable_redirect = true;$/;"	v
+g_ftc_comm_initialized	src/ftc_client.cpp	/^bool g_ftc_comm_initialized = false;$/;"	v
+g_ftc_initialized	src/ftc_client.cpp	/^bool g_ftc_initialized = false;$/;"	v
+g_ftc_server_count	src/ftc_client.cpp	/^uint32_t g_ftc_server_count = 0;$/;"	v
+g_mercury_init	src/ftc_client.cpp	/^bool g_mercury_init=false;$/;"	v
+generate_files	tests/basic_test.c	/^void generate_files(uint32_t filecount){$/;"	f
+handle	src/ftc_comm.cpp	/^    hg_handle_t handle;$/;"	m	struct:ftc_rpc_state	file:
+handle	src/ftc_comm_client.cpp	/^    hg_handle_t handle;$/;"	m	struct:ftc_rpc_state	file:
+hg_class	src/ftc_comm.cpp	/^static hg_class_t *hg_class = NULL;$/;"	v	file:
+hg_class	src/ftc_server.cpp	/^	hg_class_t *hg_class;$/;"	m	struct:ftc_lookup_arg	file:
+hg_context	src/ftc_comm.cpp	/^static hg_context_t *hg_context = NULL;$/;"	v	file:
+ftc_client_block	src/ftc_comm_client.cpp	/^void ftc_client_block()$/;"	f
+ftc_client_close_id	src/ftc_comm_client.cpp	/^static hg_id_t ftc_client_close_id;$/;"	v	file:
+ftc_client_comm_gen_close_rpc	src/ftc_comm_client.cpp	/^void ftc_client_comm_gen_close_rpc(uint32_t svr_hash, int fd)$/;"	f
+ftc_client_comm_gen_open_rpc	src/ftc_comm_client.cpp	/^void ftc_client_comm_gen_open_rpc(uint32_t svr_hash, string path, int fd)$/;"	f
+ftc_client_comm_gen_read_rpc	src/ftc_comm_client.cpp	/^void ftc_client_comm_gen_read_rpc(uint32_t svr_hash, int localfd, void *buffer, ssize_t count, off_t offset)$/;"	f
+ftc_client_comm_gen_seek_rpc	src/ftc_comm_client.cpp	/^void ftc_client_comm_gen_seek_rpc(uint32_t svr_hash, int fd, int offset, int whence)$/;"	f
+ftc_client_comm_lookup_addr	src/ftc_comm_client.cpp	/^hg_addr_t ftc_client_comm_lookup_addr(int rank)$/;"	f
+ftc_client_comm_register_rpc	src/ftc_comm_client.cpp	/^void ftc_client_comm_register_rpc()$/;"	f
+ftc_client_init	src/ftc_client.cpp	/^static void __attribute__((constructor)) ftc_client_init()$/;"	f	file:
+ftc_client_open_id	src/ftc_comm_client.cpp	/^static hg_id_t ftc_client_open_id;$/;"	v	file:
+ftc_client_rpc_id	src/ftc_comm_client.cpp	/^static hg_id_t ftc_client_rpc_id;$/;"	v	file:
+ftc_client_seek_id	src/ftc_comm_client.cpp	/^static hg_id_t ftc_client_seek_id;$/;"	v	file:
+ftc_client_shutdown	src/ftc_client.cpp	/^static void __attribute((destructor)) ftc_client_shutdown()$/;"	f
+ftc_close_rpc_handler	src/ftc_comm.cpp	/^ftc_close_rpc_handler(hg_handle_t handle)$/;"	f	file:
+ftc_close_rpc_register	src/ftc_comm.cpp	/^ftc_close_rpc_register(void)$/;"	f
+ftc_comm_create_handle	src/ftc_comm.cpp	/^ftc_comm_create_handle(hg_addr_t addr, hg_id_t id, hg_handle_t *handle)$/;"	f
+ftc_comm_free_addr	src/ftc_comm.cpp	/^ftc_comm_free_addr(hg_addr_t addr)$/;"	f
+ftc_comm_get_class	src/ftc_comm.cpp	/^hg_class_t *ftc_comm_get_class()$/;"	f
+ftc_comm_get_context	src/ftc_comm.cpp	/^hg_context_t *ftc_comm_get_context()$/;"	f
+ftc_comm_list_addr	src/ftc_comm.cpp	/^void ftc_comm_list_addr()$/;"	f
+ftc_data_dir	src/ftc_client.cpp	/^char *ftc_data_dir = NULL;$/;"	v
+ftc_data_mover_fn	src/ftc_data_mover.cpp	/^void *ftc_data_mover_fn(void *args)$/;"	f
+ftc_file_tracked	src/ftc_client.cpp	/^bool ftc_file_tracked(int fd)$/;"	f
+ftc_get_path	src/ftc_client.cpp	/^const char * ftc_get_path(int fd)$/;"	f
+ftc_init_comm	src/ftc_comm.cpp	/^void ftc_init_comm(hg_bool_t listen)$/;"	f
+ftc_init_logging	src/ftc_logging.c	/^void ftc_init_logging()$/;"	f
+ftc_lookup_arg	src/ftc_server.cpp	/^struct ftc_lookup_arg {$/;"	s	file:
+ftc_open_cb	src/ftc_comm_client.cpp	/^ftc_open_cb(const struct hg_cb_info *info)$/;"	f	file:
+ftc_open_rpc_handler	src/ftc_comm.cpp	/^ftc_open_rpc_handler(hg_handle_t handle)$/;"	f	file:
+ftc_open_rpc_register	src/ftc_comm.cpp	/^ftc_open_rpc_register(void)$/;"	f
+ftc_open_state	src/ftc_comm_client.cpp	/^struct ftc_open_state{$/;"	s	file:
+ftc_progress_fn	src/ftc_comm.cpp	/^void *ftc_progress_fn(void *args)$/;"	f
+ftc_progress_thread_shutdown_flags	src/ftc_comm.cpp	/^static int ftc_progress_thread_shutdown_flags = 0;$/;"	v	file:
+ftc_read_block	src/ftc_comm_client.cpp	/^ssize_t ftc_read_block()$/;"	f
+ftc_read_cb	src/ftc_comm_client.cpp	/^ftc_read_cb(const struct hg_cb_info *info)$/;"	f	file:
+ftc_remote_close	src/ftc_client.cpp	/^void ftc_remote_close(int fd){$/;"	f
+ftc_remote_lseek	src/ftc_client.cpp	/^ssize_t ftc_remote_lseek(int fd, int offset, int whence)$/;"	f
+ftc_remote_pread	src/ftc_client.cpp	/^ssize_t ftc_remote_pread(int fd, void *buf, size_t count, off_t offset)$/;"	f
+ftc_remote_read	src/ftc_client.cpp	/^ssize_t ftc_remote_read(int fd, void *buf, size_t count)$/;"	f
+ftc_remove_fd	src/ftc_client.cpp	/^bool ftc_remove_fd(int fd)$/;"	f
+ftc_rpc_handler	src/ftc_comm.cpp	/^ftc_rpc_handler(hg_handle_t handle)$/;"	f	file:
+ftc_rpc_handler_bulk_cb	src/ftc_comm.cpp	/^ftc_rpc_handler_bulk_cb(const struct hg_cb_info *info)$/;"	f	file:
+ftc_rpc_register	src/ftc_comm.cpp	/^ftc_rpc_register(void)$/;"	f
+ftc_rpc_state	src/ftc_comm.cpp	/^struct ftc_rpc_state {$/;"	s	file:
+ftc_rpc_state	src/ftc_comm_client.cpp	/^struct ftc_rpc_state {$/;"	s	file:
+ftc_seek_block	src/ftc_comm_client.cpp	/^ssize_t ftc_seek_block()$/;"	f
+ftc_seek_cb	src/ftc_comm_client.cpp	/^ftc_seek_cb(const struct hg_cb_info *info)$/;"	f	file:
+ftc_seek_rpc_handler	src/ftc_comm.cpp	/^ftc_seek_rpc_handler(hg_handle_t handle)$/;"	f	file:
+ftc_seek_rpc_register	src/ftc_comm.cpp	/^ftc_seek_rpc_register(void)$/;"	f
+ftc_server_count	src/ftc_server.cpp	/^uint32_t ftc_server_count = 0;$/;"	v
+ftc_server_rank	src/ftc_comm.cpp	/^static int ftc_server_rank = -1;$/;"	v	file:
+ftc_shutdown_comm	src/ftc_comm.cpp	/^void ftc_shutdown_comm()$/;"	f
+ftc_start_comm_server	src/ftc_server.cpp	/^int ftc_start_comm_server(void)$/;"	f
+ftc_track_file	src/ftc_client.cpp	/^bool ftc_track_file(const char *path, int flags, int fd)$/;"	f
+id	src/ftc_server.cpp	/^	hg_id_t id;$/;"	m	struct:ftc_lookup_arg	file:
+in	src/ftc_comm.cpp	/^    ftc_rpc_in_t in;$/;"	m	struct:ftc_rpc_state	file:
+init_mutex	src/ftc_client.cpp	/^pthread_mutex_t init_mutex = PTHREAD_MUTEX_INITIALIZER;$/;"	v
+local_fd	src/ftc_comm_client.cpp	/^    uint32_t local_fd;$/;"	m	struct:ftc_open_state	file:
+log_preformatter_internal	src/ftc_logging.c	/^void log_preformatter_internal( unsigned priority, const char* filename, unsigned linenum, const char *format_str, ...)$/;"	f
+lseek	src/wrappers.c	/^off_t WRAP_DECL(lseek)(int fd, off_t offset, int whence)$/;"	f
+lseek64	src/wrappers.c	/^off64_t WRAP_DECL(lseek64)(int fd, off64_t offset, int whence)$/;"	f
+main	src/ftc_server.cpp	/^int main(int argc, char **argv)$/;"	f
+main	tests/basic_test.c	/^int main(int argc, char **argv){$/;"	f
+open	src/wrappers.c	/^int WRAP_DECL(open)(const char *pathname, int flags, ...)$/;"	f
+open64	src/wrappers.c	/^int WRAP_DECL(open64)(const char *pathname, int flags, ...)$/;"	f
+param_layout_to_use	src/ftc_logging.c	/^const char *param_layout_to_use = "dated"; \/\/ could also be "basic"$/;"	v
+param_max_file_size	src/ftc_logging.c	/^long param_max_file_size = 100 * 1024 * 1024;  \/\/ Value is in bytes$/;"	v
+param_max_num_files	src/ftc_logging.c	/^long param_max_num_files = 10;$/;"	v
+path_cache_map	src/ftc_data_mover.cpp	/^map<string, string> path_cache_map;$/;"	v
+pread	src/wrappers.c	/^ssize_t WRAP_DECL(pread)(int fd, void *buf, size_t count, off_t offset)$/;"	f
+read	src/wrappers.c	/^ssize_t WRAP_DECL(read)(int fd, void *buf, size_t count)$/;"	f
+read64	src/wrappers.c	/^ssize_t WRAP_DECL(read64)(int fd, void *buf, size_t count)$/;"	f
+read_ret	src/ftc_comm_client.cpp	/^ssize_t read_ret = -1;$/;"	v
+readv	src/wrappers.c	/^ssize_t WRAP_DECL(readv)(int fd, const struct iovec *iov, int iovcnt)$/;"	f
+server_rank	src/ftc_comm.cpp	/^static int server_rank = -1;$/;"	v	file:
+size	src/ftc_comm.cpp	/^    hg_size_t size;$/;"	m	struct:ftc_rpc_state	file:
+size	src/ftc_comm_client.cpp	/^    hg_size_t size;$/;"	m	struct:ftc_rpc_state	file:
+test_file_read	tests/basic_test.c	/^void test_file_read(uint32_t iterations)$/;"	f
+tl_disable_redirect	src/ftc_client.cpp	/^__thread bool tl_disable_redirect = false;$/;"	v
+tl_disable_redirect	src/ftc_server.cpp	/^__thread bool tl_disable_redirect = false;$/;"	v
+value	src/ftc_comm_client.cpp	/^    uint32_t value;$/;"	m	struct:ftc_rpc_state	file:
+write	src/wrappers.c	/^ssize_t WRAP_DECL(write)(int fd, const void *buf, size_t count)$/;"	f
