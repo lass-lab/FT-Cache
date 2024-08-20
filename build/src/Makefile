@@ -189,6 +189,33 @@ ftc_server/fast:
 	cd /scratch/s5104a21/FT-Cache/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_server.dir/build.make src/CMakeFiles/ftc_server.dir/build
 .PHONY : ftc_server/fast
 
+ftc.o: ftc.cpp.o
+.PHONY : ftc.o
+
+# target to build an object file
+ftc.cpp.o:
+	cd /scratch/s5104a21/FT-Cache/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_client.dir/build.make src/CMakeFiles/ftc_client.dir/ftc.cpp.o
+	cd /scratch/s5104a21/FT-Cache/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_server.dir/build.make src/CMakeFiles/ftc_server.dir/ftc.cpp.o
+.PHONY : ftc.cpp.o
+
+ftc.i: ftc.cpp.i
+.PHONY : ftc.i
+
+# target to preprocess a source file
+ftc.cpp.i:
+	cd /scratch/s5104a21/FT-Cache/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_client.dir/build.make src/CMakeFiles/ftc_client.dir/ftc.cpp.i
+	cd /scratch/s5104a21/FT-Cache/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_server.dir/build.make src/CMakeFiles/ftc_server.dir/ftc.cpp.i
+.PHONY : ftc.cpp.i
+
+ftc.s: ftc.cpp.s
+.PHONY : ftc.s
+
+# target to generate assembly for a file
+ftc.cpp.s:
+	cd /scratch/s5104a21/FT-Cache/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_client.dir/build.make src/CMakeFiles/ftc_client.dir/ftc.cpp.s
+	cd /scratch/s5104a21/FT-Cache/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_server.dir/build.make src/CMakeFiles/ftc_server.dir/ftc.cpp.s
+.PHONY : ftc.cpp.s
+
 ftc_client.o: ftc_client.cpp.o
 .PHONY : ftc_client.o
 
@@ -380,6 +407,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... ftc_client"
 	@echo "... ftc_server"
+	@echo "... ftc.o"
+	@echo "... ftc.i"
+	@echo "... ftc.s"
 	@echo "... ftc_client.o"
 	@echo "... ftc_client.i"
 	@echo "... ftc_client.s"

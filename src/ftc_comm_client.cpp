@@ -32,11 +32,11 @@ ssize_t read_ret = -1;
 std::map<int, std::string> address_cache;
 extern std::map<int, int > fd_redir_map;
 
-/* for Fault tolerance */
+/* For Fault tolerance */
 std::vector<int> timeout_counters;
 std::mutex timeout_mutex;
 
-/* for logging */
+/* For logging */
 hg_addr_t my_address = HG_ADDR_NULL;
 char client_address[128];
 int client_rank;
@@ -68,15 +68,19 @@ ftc_open_cb(const struct hg_cb_info *info)
 {
     ftc_open_out_t out;
     struct ftc_open_state_t *ftc_open_state_p = (struct ftc_open_state_t *)info->arg;    
-    log_info_t log_info;
-	const struct hg_info *hgi; 
+	log_info_t log_info;
+	const struct hg_info *hgi;  
+
    
     assert(info->ret == HG_SUCCESS);
+	if (info->ret != HG_SUCCESS) {
+        L4C_INFO("RPC failed: %s", HG_Error_to_string(info->ret));
+    }	
     HG_Get_output(info->info.forward.handle, &out);    
-    gettimeofday(&log_info.clocktime, NULL);
+	gettimeofday(&log_info.clocktime, NULL);
     fd_redir_map[ftc_open_state_p->local_fd] = out.ret_status;
-
-	// logging code
+	
+	/* Logging code */
 	char server_addr[128];
     char server_ip[128];
     hgi = HG_Get_info(info->info.forward.handle);
@@ -123,8 +127,8 @@ ftc_read_cb(const struct hg_cb_info *info)
     ftc_rpc_out_t out;
     struct ftc_rpc_state_t_client *ftc_rpc_state_p = (ftc_rpc_state_t_client *)info->arg;
 	const struct hg_info *hgi;
+	log_info_t log_info;
 
-    log_info_t log_info;
     assert(info->ret == HG_SUCCESS);
 	if (info->ret != HG_SUCCESS) {
         L4C_INFO("RPC failed: %s", HG_Error_to_string(info->ret));
@@ -132,21 +136,21 @@ ftc_read_cb(const struct hg_cb_info *info)
 	else{
     /* Decode response */
     	ret = HG_Get_output(info->info.forward.handle, &out);
-    	gettimeofday(&log_info.clocktime, NULL);
+		gettimeofday(&log_info.clocktime, NULL);
 		if (ret != HG_SUCCESS) {
-    		L4C_INFO("Failed to get output: %s", HG_Error_to_string(ret));
+    		L4C_INFO("Failed to get output: %s", HG_Error_to_string(ret));				
    		}
 		else {
 			*(ftc_rpc_state_p->bytes_read) = out.ret;
 			if (out.ret < 0) {
             	L4C_INFO("Server-side read failed with result: %zd", out.ret);
+
 			}	
  	   		ret = HG_Free_output(info->info.forward.handle, &out);
 			assert(ret == HG_SUCCESS);
 		}
 	} 
 
-	/* Logging code */
 	char server_addr[128];
     char server_ip[128];
 	hgi = HG_Get_info(info->info.forward.handle);
@@ -169,10 +173,12 @@ ftc_read_cb(const struct hg_cb_info *info)
     gettimeofday(&log_info.clocktime, NULL);
 
     logging_info(&log_info, "client");
+
 	
    /* Clean up resources consumed by this rpc */
     ret = HG_Bulk_free(ftc_rpc_state_p->bulk_handle);
 	assert(ret == HG_SUCCESS);
+
 	ret = HG_Destroy(info->info.forward.handle);
 	assert(ret == HG_SUCCESS);
     
@@ -198,7 +204,7 @@ void ftc_client_comm_register_rpc()
 
 void ftc_client_block(uint32_t host, hg_bool_t *done, pthread_cond_t *cond, pthread_mutex_t *mutex)
 {
-    /* wait for callbacks to finish */
+    /* Wait for callbacks to finish */
 	/* Timeout logic */
 	int wait_status;
     
@@ -284,7 +290,7 @@ void ftc_client_comm_gen_close_rpc(uint32_t svr_hash, int fd, ftc_rpc_state_t_cl
 	rpc_state->addr = svr_addr;	
 	rpc_state->host = svr_hash;
 
-    /* Create handle to represent this rpc operation */
+    /* Create create handle to represent this rpc operation */
     ftc_comm_create_handle(svr_addr, ftc_client_close_id, &handle);
 	rpc_state->handle = handle; 
 
@@ -312,6 +318,7 @@ void ftc_client_comm_gen_close_rpc(uint32_t svr_hash, int fd, ftc_rpc_state_t_cl
     gettimeofday(&log_info.clocktime, NULL);
 
     logging_info(&log_info, "client");
+
 
     ret = HG_Forward(handle, NULL, NULL, &in);
     assert(ret == 0);
@@ -342,15 +349,16 @@ void ftc_client_comm_gen_open_rpc(uint32_t svr_hash, string path, int fd, ftc_op
 
     in.path = (hg_string_t)malloc(strlen(path.c_str()) + 1 );
     sprintf(in.path,"%s",path.c_str());
+   
+	/* Logging code */
 	in.client_rank = client_rank;   
 	in.localfd = fd;	
 
 	strncpy(ftc_open_state_p->filepath, path.c_str(), sizeof(ftc_open_state_p->filepath) - 1);
 	ftc_open_state_p->filepath[sizeof(ftc_open_state_p->filepath) - 1] = '\0'; // Ensure null termination
-	ftc_open_state_p->svr_hash = svr_hash;
-
-	/* Logging code */
-    log_info_t log_info;
+	ftc_open_state_p->svr_hash = svr_hash; 
+    
+	log_info_t log_info;
     strncpy(log_info.filepath, path.c_str(), sizeof(log_info.filepath));
     strncpy(log_info.request, "open", sizeof(log_info.request));
 	
@@ -370,10 +378,9 @@ void ftc_client_comm_gen_open_rpc(uint32_t svr_hash, string path, int fd, ftc_op
     gettimeofday(&log_info.clocktime, NULL);	
    
 	logging_info(&log_info, "client"); 
-	
+
     ret = HG_Forward(handle, ftc_open_cb, ftc_open_state_p, &in);
     assert(ret == 0);
-
     
     ftc_comm_free_addr(svr_addr);
 
@@ -390,8 +397,9 @@ void ftc_client_comm_gen_read_rpc(uint32_t svr_hash, int localfd, void *buffer, 
 	
     svr_addr = ftc_client_comm_lookup_addr(svr_hash);
 
-    /* Set up state structure */
+    /* Wet up state structure */
     ftc_rpc_state_p->size = count;
+
 
     /* This includes allocating a src buffer for bulk transfer */
     ftc_rpc_state_p->buffer = buffer;
@@ -409,8 +417,8 @@ void ftc_client_comm_gen_read_rpc(uint32_t svr_hash, int localfd, void *buffer, 
 
     ftc_rpc_state_p->bulk_handle = in.bulk_handle;
     assert(ret == HG_SUCCESS);
-	ftc_rpc_state_p->local_fd = localfd; //sy: add
-	ftc_rpc_state_p->offset = offset; //sy: add
+	ftc_rpc_state_p->local_fd = localfd; 
+	ftc_rpc_state_p->offset = offset; 
     /* Send rpc. Note that we are also transmitting the bulk handle in the
      * input struct.  It was set above.
      */
@@ -419,10 +427,9 @@ void ftc_client_comm_gen_read_rpc(uint32_t svr_hash, int localfd, void *buffer, 
     in.accessfd = fd_redir_map[localfd];
 	in.localfd = localfd; 
     in.offset = offset;
-	in.client_rank = client_rank; // Add - for logging 
-
-	ftc_rpc_state_p->svr_hash = svr_hash;
-
+  	in.client_rank = client_rank; // For logging  	 
+	ftc_rpc_state_p->svr_hash = svr_hash;    
+ 
 	/* Logging code */
     log_info_t log_info;
 	snprintf(log_info.filepath, sizeof(log_info.filepath), "fd_%d", localfd);
@@ -443,9 +450,9 @@ void ftc_client_comm_gen_read_rpc(uint32_t svr_hash, int localfd, void *buffer, 
     log_info.n_batch = -1;
     gettimeofday(&log_info.clocktime, NULL);
 
-    logging_info(&log_info, "client");   
-	 
-    
+    logging_info(&log_info, "client"); 
+
+
     ret = HG_Forward(ftc_rpc_state_p->handle, ftc_read_cb, ftc_rpc_state_p, &in);
     assert(ret == 0);
 
@@ -468,7 +475,7 @@ void ftc_client_comm_gen_seek_rpc(uint32_t svr_hash, int fd, int offset, int whe
     svr_addr = ftc_client_comm_lookup_addr(svr_hash);    
 
     /* Allocate args for callback pass through */    
-    /* create create handle to represent this rpc operation */    
+    /* Create handle to represent this rpc operation */    
     ftc_comm_create_handle(svr_addr, ftc_client_seek_id, &handle);  
 
     in.fd = fd_redir_map[fd];
@@ -486,9 +493,10 @@ void ftc_client_comm_gen_seek_rpc(uint32_t svr_hash, int fd, int offset, int whe
 
 }
 
-//We've converted the filename to a rank
-//Using standard c++ hashing modulo servers
-//Find the address
+
+/* We've converted the filename to a rank
+	Using standard c++ hashing modulo servers
+	Find the address */
 hg_addr_t ftc_client_comm_lookup_addr(int rank)
 {
 	if (address_cache.find(rank) != address_cache.end())
@@ -502,19 +510,13 @@ hg_addr_t ftc_client_comm_lookup_addr(int rank)
 	char filename[PATH_MAX];
 	char svr_str[PATH_MAX];
 	int svr_rank = -1;
-//	char *stepid = getenv("PMI_NAMESPACE");
 	char *jobid = getenv("MY_JOBID");
-	L4C_INFO("slurm jobid %s\n", jobid);
 	hg_addr_t target_server;
 	bool svr_found = false;
 	FILE *na_config = NULL;
 	sprintf(filename, "./.ports.cfg.%s", jobid);
 	na_config = fopen(filename,"r+");
-   
-	if (na_config == NULL) {
-        L4C_DEBUG("Failed to open configuration file\n");
-        return HG_ADDR_NULL;
-    } 
+    
 
 	while (fscanf(na_config, "%d %s\n",&svr_rank, svr_str) == 2)
 	{
@@ -554,4 +556,3 @@ void ftc_get_addr() {
     	client_rank = (rank_str != NULL) ? atoi(rank_str) : -1;
     }
 }
-

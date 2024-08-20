@@ -1,5 +1,3 @@
-//Starting to use CPP functionality
-
 
 #include <map>
 #include <string>
@@ -11,6 +9,9 @@
 #include "ftc_internal.h"
 #include "ftc_logging.h"
 #include "ftc_comm.h"
+#include "ftc_hashing.h"
+
+#define VIRTUAL_NODE_CNT 100
 
 __thread bool tl_disable_redirect = false;
 bool g_disable_redirect = true;
@@ -26,6 +27,9 @@ pthread_mutex_t init_mutex = PTHREAD_MUTEX_INITIALIZER;
 std::map<int,std::string> fd_map;
 std::map<int, int > fd_redir_map;
 const int TIMEOUT_LIMIT = 3;
+HashRing<string, string>* hashRing; // ptr to the consistent hashing object
+vector<bool> failure_flags;
+
 
 /* Devise a way to safely call this and initialize early */
 static void __attribute__((constructor)) ftc_client_init()
@@ -56,9 +60,9 @@ static void __attribute__((constructor)) ftc_client_init()
 		snprintf(ftc_data_dir, strlen(ftc_data_dir_c) + 1, "%s", ftc_data_dir_c);
     }
     
-	initialize_timeout_counters(g_ftc_server_count); 
-    g_ftc_initialized = true;
+	initialize_hash_ring(g_ftc_server_count, VIRTUAL_NODE_CNT);
 	ftc_get_addr();
+    g_ftc_initialized = true;
     pthread_mutex_unlock(&init_mutex);
     
 	g_disable_redirect = false;
@@ -67,13 +71,19 @@ static void __attribute__((constructor)) ftc_client_init()
 static void __attribute((destructor)) ftc_client_shutdown()
 {
     ftc_shutdown_comm();
+	delete hashRing;
 }
 
-/* Initialization function for timeout counter */
-void initialize_timeout_counters(int num_nodes) {
-    timeout_counters.resize(num_nodes, 0);
+/* Initialization function for hash ring & timeout counter */
+void initialize_hash_ring(int serverCount, int vnodes) {
+    hashRing = new HashRing<string, string>(vnodes);
+    for (int i = 1; i <= serverCount; ++i) {
+        string server = "server" + to_string(i);
+        hashRing->AddNode(server);
+    }
+    timeout_counters.resize(serverCount, 0);
+    failure_flags.resize(serverCount, false);
 }
-
 
 bool ftc_track_file(const char *path, int flags, int fd)
 {       
@@ -123,7 +133,7 @@ bool ftc_track_file(const char *path, int flags, int fd)
 			/* I think I only need to do this once */
 			ftc_client_comm_register_rpc();
 			g_mercury_init = true;
-			initialize_timeout_counters(g_ftc_server_count);
+			initialize_hash_ring(g_ftc_server_count, VIRTUAL_NODE_CNT);
 			const char *type = "client"; 
 			const char *rank_str = getenv("HOROVOD_RANK");
 			int client_rank = atoi(rank_str);
@@ -134,14 +144,17 @@ bool ftc_track_file(const char *path, int flags, int fd)
         ftc_open_state_p->done = &done;
         ftc_open_state_p->cond = &cond;
         ftc_open_state_p->mutex = &mutex;	
-		int host = std::hash<std::string>{}(fd_map[fd]) % g_ftc_server_count;	
-		
+		string hostname = hashRing->GetNode(fd_map[fd]);
+		int host = hashRing->ConvertHostToNumber(hostname);
 		{
             std::lock_guard<std::mutex> lock(timeout_mutex);
 			
-            if (timeout_counters[host] >= TIMEOUT_LIMIT) {
+            if (timeout_counters[host] >= TIMEOUT_LIMIT && !failure_flags[host]) {
                 L4C_INFO("Host %d reached timeout limit, skipping", host);
-                return false; // Skip further processing for this node
+				hashRing->RemoveNode(hostname);
+				failure_flags[host] = true;
+				hostname = hashRing->GetNode(fd_map[fd]); // Imediately directed to the new node
+                host = hashRing->ConvertHostToNumber(hostname);
             }
         }
 
@@ -169,16 +182,23 @@ ssize_t ftc_remote_read(int fd, void *buf, size_t count)
 	pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 	pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
+	/* Determine the node failure by checking the timeout limit and failure flags.
+			If the failure is detected, 1) remove the node from the hash ring
+			2) erase the fd from the fd_map */
 	if (ftc_file_tracked(fd)){
-		int host = std::hash<std::string>{}(fd_map[fd]) % g_ftc_server_count;	
-		{
+		string hostname = hashRing->GetNode(fd_map[fd]);
+        int host = hashRing->ConvertHostToNumber(hostname);
+        {
             std::lock_guard<std::mutex> lock(timeout_mutex);
-            if (timeout_counters[host] >= TIMEOUT_LIMIT) {
+
+            if (timeout_counters[host] >= TIMEOUT_LIMIT && !failure_flags[host]) {
                 L4C_INFO("Host %d reached timeout limit, skipping", host);
-                return bytes_read; // Skip further processing for this node
+                hashRing->RemoveNode(hostname);
+                failure_flags[host] = true;
+				fd_map.erase(fd);
+				return bytes_read;	
             }
         }	
-	
         ftc_rpc_state_t_client *ftc_rpc_state_p = (ftc_rpc_state_t_client *)malloc(sizeof(ftc_rpc_state_t_client));
         ftc_rpc_state_p->bytes_read = &bytes_read;
         ftc_rpc_state_p->done = &done;
@@ -187,6 +207,9 @@ ssize_t ftc_remote_read(int fd, void *buf, size_t count)
 
 		ftc_client_comm_gen_read_rpc(host, fd, buf, count, -1, ftc_rpc_state_p);
 		bytes_read = ftc_read_block(host, &done, &bytes_read, &cond, &mutex);		
+		if(bytes_read == -1){
+            fd_map.erase(fd);
+        }
 	}
 	/* Non-FT_Cache Reads come from base */
 	return bytes_read;
@@ -208,13 +231,20 @@ ssize_t ftc_remote_pread(int fd, void *buf, size_t count, off_t offset)
     pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
     pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
+    /* Determine the node failure by checking the timeout limit and failure flags.
+            If the failure is detected, 1) remove the node from the hash ring
+            2) erase the fd from the fd_map */
 	if (ftc_file_tracked(fd)){
-		int host = std::hash<std::string>{}(fd_map[fd]) % g_ftc_server_count;	
-		{
+		string hostname = hashRing->GetNode(fd_map[fd]);
+        int host = hashRing->ConvertHostToNumber(hostname);
+        {
             std::lock_guard<std::mutex> lock(timeout_mutex);
-            if (timeout_counters[host] >= TIMEOUT_LIMIT) {
-                L4C_INFO("Host %d reached timeout limit, skipping", host);
-                return bytes_read; // Skip further processing for this node
+
+            if (timeout_counters[host] >= TIMEOUT_LIMIT && !failure_flags[host]) {
+                hashRing->RemoveNode(hostname);
+                failure_flags[host] = true;
+				fd_map.erase(fd);
+				return bytes_read;
             }
         }
         ftc_rpc_state_t_client *ftc_rpc_state_p = (ftc_rpc_state_t_client *)malloc(sizeof(ftc_rpc_state_t_client));
@@ -225,6 +255,9 @@ ssize_t ftc_remote_pread(int fd, void *buf, size_t count, off_t offset)
 
 		ftc_client_comm_gen_read_rpc(host, fd, buf, count, offset, ftc_rpc_state_p);
 		bytes_read = ftc_read_block(host, &done, &bytes_read, &cond, &mutex);   	
+		if(bytes_read == -1){
+			fd_map.erase(fd);
+		}
 	}
 	/* Non-FT_Cache Reads come from base */
 	return bytes_read;
@@ -239,7 +272,8 @@ ssize_t ftc_remote_lseek(int fd, int offset, int whence)
 	 */
 	ssize_t bytes_read = -1;
 	if (ftc_file_tracked(fd)){
-		int host = std::hash<std::string>{}(fd_map[fd]) % g_ftc_server_count;	
+		string hostname = hashRing->GetNode(fd_map[fd]);
+        int host = hashRing->ConvertHostToNumber(hostname);
 		L4C_INFO("Remote seek - Host %d", host);		
 		ftc_client_comm_gen_seek_rpc(host, fd, offset, whence);
 		bytes_read = ftc_seek_block();   		
@@ -251,12 +285,15 @@ ssize_t ftc_remote_lseek(int fd, int offset, int whence)
 
 void ftc_remote_close(int fd){
 	if (ftc_file_tracked(fd)){
-		int host = std::hash<std::string>{}(fd_map[fd]) % g_ftc_server_count;	
-		{
+		string hostname = hashRing->GetNode(fd_map[fd]);
+        int host = hashRing->ConvertHostToNumber(hostname);
+        {
             std::lock_guard<std::mutex> lock(timeout_mutex);
-            if (timeout_counters[host] >= TIMEOUT_LIMIT) {
+            if (timeout_counters[host] >= TIMEOUT_LIMIT && !failure_flags[host]) {
                 L4C_INFO("Host %d reached timeout limit, skipping", host);
-                return; // Skip further processing for this node
+                hashRing->RemoveNode(hostname);
+                failure_flags[host] = true;
+				return; // Skip further processing for this node
             }
         }
 		ftc_rpc_state_t_close *rpc_state = (ftc_rpc_state_t_close *)malloc(sizeof(ftc_rpc_state_t_close));

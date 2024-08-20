@@ -93,7 +93,6 @@ int WRAP_DECL(open)(const char *pathname, int flags, ...)
 	int ret = 0;
 	va_list ap;
 	int mode = 0;
-
 	int use_mode = 0; // you can revert this change
 
 	if (flags & O_CREAT)
@@ -101,12 +100,12 @@ int WRAP_DECL(open)(const char *pathname, int flags, ...)
 		va_start(ap, flags);
 		mode = va_arg(ap, int);
 		va_end(ap);
-		use_mode = 1; 
+		use_mode = 1; //add
 	}
 
 	MAP_OR_FAIL(open);
 	if (g_disable_redirect || tl_disable_redirect){
-		if (use_mode) { 
+		if (use_mode) { //add
             return __real_open(pathname, flags, mode);
         }
 		else {
@@ -119,8 +118,8 @@ int WRAP_DECL(open)(const char *pathname, int flags, ...)
 	 * If this impedes performance we can investigate a cheap way of generating
 	 * an FD
 	 */
-		ret = use_mode ? __real_open(pathname, flags, mode) : __real_open(pathname, flags); 
 	//ret = __real_open(pathname, flags, mode); //original code
+	ret = use_mode ? __real_open(pathname, flags, mode) : __real_open(pathname, flags); // add
 
 	/* C++ code determines whether to track */
 	if (ret != -1){
@@ -251,13 +250,14 @@ ssize_t WRAP_DECL(pread)(int fd, void *buf, size_t count, off_t offset)
 	MAP_OR_FAIL(pread);
 
 	const char *path = ftc_get_path(fd);
-	
 
 	if (path)
 	{                
 //		L4C_INFO("pread to tracked file %s",path);
 		
+//		memset(buf, 0, count);
 		ret = ftc_remote_pread(fd, buf, count, offset);
+
 		if(ret < 0){
 			
 			L4C_INFO("remote pread_error returned %s",path);

@@ -13,7 +13,6 @@ extern "C" {
 #include <iostream>
 #include <map>	
 
-
 static hg_class_t *hg_class = NULL;
 static hg_context_t *hg_context = NULL;
 static int ftc_progress_thread_shutdown_flags = 0;
@@ -30,7 +29,6 @@ struct ftc_rpc_state {
     hg_handle_t handle;
     ftc_rpc_in_t in;
 };
-
 
 /* Extract IP address for node checking */
 void extract_ip_portion(const char* full_address, char* ip_portion, size_t max_len) {
@@ -97,14 +95,14 @@ void logging_info(log_info_t *info, const char *type) {
     fclose(log_file);
 }
 
+
+
 /* Initialize communication for both the client and server
 	processes
 	This is based on the rpc_engine template provided by the mercury lib */
 void ftc_init_comm(hg_bool_t listen)
 {
 	const char *info_string = "ofi+tcp://";  
-//	char *rank_str = getenv("PMI_RANK");  
-//    server_rank = atoi(rank_str);
     pthread_t ftc_progress_tid;
 
     HG_Set_log_level("DEBUG");
@@ -122,10 +120,9 @@ void ftc_init_comm(hg_bool_t listen)
 	}
 
 	/* Only for server processes */
-
 	if (listen)
 	{
-		char *rank_str = getenv("PMIX_RANK");
+		char *rank_str = getenv("PMIX_RANK");  
     	server_rank = atoi(rank_str);
 		if (rank_str != NULL){
 			ftc_server_rank = atoi(rank_str);
@@ -191,10 +188,10 @@ void ftc_comm_list_addr()
     hg_addr_t self_addr;
 	FILE *na_config = NULL;
 	hg_size_t self_addr_string_size = PATH_MAX;
-//	char *stepid = getenv("PMI_NAMESPACE");
+//	char *stepid = getenv("PMIX_NAMESPACE");
+//	char *jobid = getenv("SLURM_JOBID");
 	char *jobid = getenv("MY_JOBID");
-	
-//	sprintf(filename, "./.ports.cfg");
+
 	sprintf(filename, "./.ports.cfg.%s", jobid);
 	/* Get self addr to tell client about */
     HG_Addr_self(hg_class, &self_addr);
@@ -202,7 +199,6 @@ void ftc_comm_list_addr()
         hg_class, self_addr_string, &self_addr_string_size, self_addr);
     HG_Addr_free(hg_class, self_addr);
     
-
 	extract_ip_portion(self_addr_string, server_addr_str, sizeof(server_addr_str));
 
     /* Write addr to a file */
@@ -234,7 +230,7 @@ char *buffer_to_hex(const void *buf, size_t size) {
     return hex_str;
 }
 
-/* callback triggered upon completion of bulk transfer */
+/* Callback triggered upon completion of bulk transfer */
 static hg_return_t
 ftc_rpc_handler_bulk_cb(const struct hg_cb_info *info)
 {
@@ -242,7 +238,6 @@ ftc_rpc_handler_bulk_cb(const struct hg_cb_info *info)
     int ret;
     ftc_rpc_out_t out;
     out.ret = ftc_rpc_state_p->size;
- //   assert(info->ret == 0);
 
 	if (info->ret != 0) {
         L4C_DEBUG("Callback info contains an error: %d\n", info->ret);
@@ -252,9 +247,9 @@ ftc_rpc_handler_bulk_cb(const struct hg_cb_info *info)
         free(ftc_rpc_state_p->buffer);
         free(ftc_rpc_state_p);
         return (hg_return_t)info->ret;
-    } 
- 
-  	ret = HG_Respond(ftc_rpc_state_p->handle, NULL, NULL, &out);
+    }
+
+    ret = HG_Respond(ftc_rpc_state_p->handle, NULL, NULL, &out);
 //    assert(ret == HG_SUCCESS);        
 
 	if (ret != HG_SUCCESS) {
@@ -283,9 +278,9 @@ ftc_rpc_handler(hg_handle_t handle)
     const struct hg_info *hgi;
     ssize_t readbytes;
 	log_info_t log_info;
-	struct timeval tmp_time;   
- 
-	ftc_rpc_state_p = (struct ftc_rpc_state*)malloc(sizeof(*ftc_rpc_state_p));
+	struct timeval tmp_time; 
+
+    ftc_rpc_state_p = (struct ftc_rpc_state*)malloc(sizeof(*ftc_rpc_state_p));
 
     /* Decode input */
     ret = HG_Get_input(handle, &ftc_rpc_state_p->in);   
@@ -295,6 +290,7 @@ ftc_rpc_handler(hg_handle_t handle)
         return (hg_return_t)ret;
     }
     gettimeofday(&log_info.clocktime, NULL);
+    
     /* This includes allocating a target buffer for bulk transfer */
     ftc_rpc_state_p->buffer = calloc(1, ftc_rpc_state_p->in.input_val);
     assert(ftc_rpc_state_p->buffer);
@@ -305,17 +301,14 @@ ftc_rpc_handler(hg_handle_t handle)
     /* Register local target buffer for bulk access */
 
     hgi = HG_Get_info(handle);
-//    assert(hgi);
 	if (!hgi) {
         L4C_DEBUG("HG_Get_info failed\n");
         return (hg_return_t)ret;
     }
-
     ret = HG_Bulk_create(hgi->hg_class, 1, &ftc_rpc_state_p->buffer,
         &ftc_rpc_state_p->size, HG_BULK_READ_ONLY,
         &ftc_rpc_state_p->bulk_handle);
     assert(ret == 0);
-
 
 	/* Logging code */
 	snprintf(log_info.filepath, sizeof(log_info.filepath), "fd_%d", ftc_rpc_state_p->in.localfd); 
@@ -343,14 +336,11 @@ ftc_rpc_handler(hg_handle_t handle)
 
     if (ftc_rpc_state_p->in.offset == -1){
         readbytes = read(ftc_rpc_state_p->in.accessfd, ftc_rpc_state_p->buffer, ftc_rpc_state_p->size);
-		if (readbytes < 0) {
-            readbytes = read(ftc_rpc_state_p->in.localfd, ftc_rpc_state_p->buffer, ftc_rpc_state_p->size);
-		}
     }else
     {
-    	gettimeofday(&log_info.clocktime, NULL);
+		gettimeofday(&log_info.clocktime, NULL);
 		strncpy(log_info.expn, "SSNVMeRequest", sizeof(log_info.expn) - 1);
-    	log_info.expn[sizeof(log_info.expn) - 1] = '\0';	
+    	log_info.expn[sizeof(log_info.expn) - 1] = '\0';
         readbytes = pread(ftc_rpc_state_p->in.accessfd, ftc_rpc_state_p->buffer, ftc_rpc_state_p->size, ftc_rpc_state_p->in.offset);
 		gettimeofday(&tmp_time, NULL);	
 
@@ -366,19 +356,12 @@ ftc_rpc_handler(hg_handle_t handle)
                 free(ftc_rpc_state_p);
                 return HG_SUCCESS;
     	}
-		else{
-			logging_info(&log_info, "server");
-			log_info.clocktime = tmp_time;
-			strncpy(log_info.expn, "SSNVMeReceive", sizeof(log_info.expn) - 1);
-        	log_info.expn[sizeof(log_info.expn) - 1] = '\0';
-    		logging_info(&log_info, "server");	
-		}
-		
 	}
-
+	
     /* Reduce size of transfer to what was actually read */
+    // We may need to revisit this.
     ftc_rpc_state_p->size = readbytes;
-    /* Initiate bulk transfer from client to server */
+    /* initiate bulk transfer from client to server */
     ret = HG_Bulk_transfer(hgi->context, ftc_rpc_handler_bulk_cb, ftc_rpc_state_p,
         HG_BULK_PUSH, hgi->addr, ftc_rpc_state_p->in.bulk_handle, 0,
         ftc_rpc_state_p->bulk_handle, 0, ftc_rpc_state_p->size, HG_OP_ID_IGNORE);
@@ -391,6 +374,8 @@ ftc_rpc_handler(hg_handle_t handle)
 }
 
 
+
+
 static hg_return_t
 ftc_open_rpc_handler(hg_handle_t handle)
 {
@@ -398,19 +383,18 @@ ftc_open_rpc_handler(hg_handle_t handle)
     ftc_open_out_t out;    
 	const struct hg_info *hgi;
 	int nvme_flag = 0;
-    log_info_t log_info;
-
+	
     int ret = HG_Get_input(handle, &in);
     assert(ret == 0);
+    string redir_path = in.path;
 
-    gettimeofday(&log_info.clocktime, NULL);
+	/* For logging */
 	hgi = HG_Get_info(handle);
     if (!hgi) {
         L4C_DEBUG("HG_Get_info failed\n");
         return (hg_return_t)ret;
     }
-
-	/* Llogging code */
+	log_info_t log_info;
     strncpy(log_info.filepath, in.path, sizeof(log_info.filepath) - 1);
     log_info.filepath[sizeof(log_info.filepath) - 1] = '\0';
     strncpy(log_info.request, "open", sizeof(log_info.request) - 1);
@@ -423,36 +407,32 @@ ftc_open_rpc_handler(hg_handle_t handle)
     extract_ip_portion(client_addr_str, client_ip, sizeof(client_ip));
 
     log_info.flag = (strcmp(server_addr_str, client_ip) == 0) ? 1 : 0;
-
-
+	
     log_info.client_rank = in.client_rank;
     log_info.server_rank = server_rank;
     strncpy(log_info.expn, "SReceive", sizeof(log_info.expn) - 1);
     log_info.expn[sizeof(log_info.expn) - 1] = '\0';
     log_info.n_epoch = in.localfd;
     log_info.n_batch = -1;
+    gettimeofday(&log_info.clocktime, NULL);
     logging_info(&log_info, "server");
 
-    string redir_path = in.path;
-    strncpy(log_info.expn, "SPFSRequest", sizeof(log_info.expn) - 1);
+	strncpy(log_info.expn, "SPFSRequest", sizeof(log_info.expn) - 1);
     log_info.expn[sizeof(log_info.expn) - 1] = '\0';
-
-    pthread_mutex_lock(&path_map_mutex);
+	
+	pthread_mutex_lock(&path_map_mutex); 
     if (path_cache_map.find(redir_path) != path_cache_map.end())
     {
         redir_path = path_cache_map[redir_path];
-        strncpy(log_info.expn, "SNVMeRequest", sizeof(log_info.expn) - 1);
+		strncpy(log_info.expn, "SNVMeRequest", sizeof(log_info.expn) - 1);
         log_info.expn[sizeof(log_info.expn) - 1] = '\0';
         nvme_flag = 1;
     }
-    pthread_mutex_unlock(&path_map_mutex);
-
-    gettimeofday(&log_info.clocktime, NULL);
+	pthread_mutex_unlock(&path_map_mutex); 	
+	gettimeofday(&log_info.clocktime, NULL);
     logging_info(&log_info, "server");
-
-    out.ret_status = open(redir_path.c_str(), O_RDONLY);
-
-    gettimeofday(&log_info.clocktime, NULL);
+    out.ret_status = open(redir_path.c_str(),O_RDONLY);  
+	gettimeofday(&log_info.clocktime, NULL);
     if (nvme_flag) {
         strncpy(log_info.expn, "SNVMeReceive", sizeof(log_info.expn) - 1);
         log_info.expn[sizeof(log_info.expn) - 1] = '\0';
@@ -461,7 +441,6 @@ ftc_open_rpc_handler(hg_handle_t handle)
         log_info.expn[sizeof(log_info.expn) - 1] = '\0';
     }
     logging_info(&log_info, "server");
-
 
     fd_to_path[out.ret_status] = in.path;  
     HG_Respond(handle,NULL,NULL,&out);
@@ -474,21 +453,25 @@ static hg_return_t
 ftc_close_rpc_handler(hg_handle_t handle)
 {
     ftc_close_in_t in;
-    const struct hg_info *hgi;
-    int nvme_flag = 0;
+	const struct hg_info *hgi;
+	int nvme_flag = 0;
 	struct timeval tmp_time;
+	log_info_t log_info;
 
-    log_info_t log_info;
     int ret = HG_Get_input(handle, &in);
-	assert(ret == HG_SUCCESS);
+    assert(ret == HG_SUCCESS);
 	gettimeofday(&log_info.clocktime, NULL);
-    hgi = HG_Get_info(handle);
+    ret = close(in.fd);
+//    assert(ret == 0);
+	
+
+	/* Logging code */
+	hgi = HG_Get_info(handle);
     if (!hgi) {
         L4C_DEBUG("HG_Get_info failed\n");
 		fd_to_path.erase(in.fd);
-        return (hg_return_t)ret;
-    }
-	/* Logging code */
+       	return (hg_return_t)ret;
+	}
 	snprintf(log_info.filepath, sizeof(log_info.filepath), "fd_%d", in.fd);    
     strncpy(log_info.request, "close", sizeof(log_info.request) - 1);
     log_info.request[sizeof(log_info.request) - 1] = '\0';
@@ -513,12 +496,9 @@ ftc_close_rpc_handler(hg_handle_t handle)
 	gettimeofday(&log_info.clocktime, NULL);
 	strncpy(log_info.expn, "SReceive", sizeof(log_info.expn) - 1);
     log_info.expn[sizeof(log_info.expn) - 1] = '\0';
-    ret = close(in.fd);
-	gettimeofday(&tmp_time, NULL);
 
-    assert(ret == 0);
- 
     /* Signal to the data mover to copy the file */
+	
 	pthread_mutex_lock(&path_map_mutex); 
     if (path_cache_map.find(fd_to_path[in.fd]) == path_cache_map.end())
     {
@@ -546,7 +526,7 @@ ftc_close_rpc_handler(hg_handle_t handle)
 	}	
 	log_info.clocktime = tmp_time;
     logging_info(&log_info, "server");	
-
+	
 	fd_to_path.erase(in.fd);
     return (hg_return_t)ret;
 }

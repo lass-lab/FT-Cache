@@ -116,12 +116,12 @@ tests/clean: tests/CMakeFiles/basic_test.dir/clean
 src/CMakeFiles/ftc_client.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_client.dir/build.make src/CMakeFiles/ftc_client.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_client.dir/build.make src/CMakeFiles/ftc_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=3,4,5,6,7,8,9 "Built target ftc_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10 "Built target ftc_client"
 .PHONY : src/CMakeFiles/ftc_client.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/ftc_client.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /scratch/s5104a21/FT-Cache/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /scratch/s5104a21/FT-Cache/build/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/ftc_client.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /scratch/s5104a21/FT-Cache/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/ftc_client.dir/rule
@@ -142,12 +142,12 @@ src/CMakeFiles/ftc_client.dir/clean:
 src/CMakeFiles/ftc_server.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_server.dir/build.make src/CMakeFiles/ftc_server.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/ftc_server.dir/build.make src/CMakeFiles/ftc_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=10,11,12,13,14 "Built target ftc_server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=11,12,13,14,15,16 "Built target ftc_server"
 .PHONY : src/CMakeFiles/ftc_server.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/ftc_server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /scratch/s5104a21/FT-Cache/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /scratch/s5104a21/FT-Cache/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/ftc_server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /scratch/s5104a21/FT-Cache/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/ftc_server.dir/rule

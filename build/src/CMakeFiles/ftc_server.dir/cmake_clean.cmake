@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/ftc_server.dir/ftc.cpp.o"
+  "CMakeFiles/ftc_server.dir/ftc.cpp.o.d"
   "CMakeFiles/ftc_server.dir/ftc_comm.cpp.o"
   "CMakeFiles/ftc_server.dir/ftc_comm.cpp.o.d"
   "CMakeFiles/ftc_server.dir/ftc_data_mover.cpp.o"

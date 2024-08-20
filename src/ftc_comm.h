@@ -32,15 +32,15 @@ struct ftc_rpc_state_t_client {
     hg_bool_t *done; 
     pthread_cond_t *cond; 
     pthread_mutex_t *mutex; 
-    char filepath[256]; 
+	char filepath[256]; 
 	uint32_t svr_hash; 
 };
 
 /* Carry CB Information for CB */
 struct ftc_open_state_t{
     uint32_t local_fd;
-    char filepath[256];
-	uint32_t svr_hash;	
+	char filepath[256];
+	uint32_t svr_hash;
     hg_bool_t *done;
     pthread_cond_t *cond;
     pthread_mutex_t *mutex;
@@ -57,7 +57,7 @@ struct ftc_rpc_state_t_close {
     hg_handle_t handle;
 };
 
-/* For Logging */
+/* For logging */
 typedef struct {
     char filepath[256];
     char request[256];
@@ -70,14 +70,12 @@ typedef struct {
     struct timeval clocktime;
 } log_info_t;
 
-
 /* For detecting the failure */
 extern std::vector<int> timeout_counters;
 extern mutex timeout_mutex;
 /* For logging */
 extern hg_addr_t my_address;
 extern int client_rank;
-
 
 /* Visible API for example RPC operation */
 
@@ -121,7 +119,7 @@ ssize_t ftc_read_block(uint32_t host, hg_bool_t *done, ssize_t *bytes_read, pthr
 ssize_t ftc_seek_block();
 
 /* For FT */
-void initialize_timeout_counters(int num_nodes);
+void initialize_hash_ring(int serverCount, int vnodes);
 void extract_ip_portion(const char* full_address, char* ip_portion, size_t max_len);
 /* Function for debugging */
 char *buffer_to_hex(const void *buf, size_t size);
@@ -130,7 +128,6 @@ char *buffer_to_hex(const void *buf, size_t size);
 void initialize_log(int rank, const char *type);
 void logging_info(log_info_t *info, const char *type);
 void ftc_get_addr();
-
 
 /* Mercury common RPC registration */
 hg_id_t ftc_rpc_register(void);

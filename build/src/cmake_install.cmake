@@ -54,7 +54,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libftc_client.so")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libftc_client.so"
-         OLD_RPATH "/home01/s5104a21/.conda/envs/cosmoflow/lib64:/scratch/s5104a21/lib/mercury2/lib:/scratch/s5104a21/lib/log4c/lib:"
+         OLD_RPATH "/sw/summit/gcc/9.1.0-alpha+20190716/lib64:/scratch/s5104a21/lib/mercury2/lib:/scratch/s5104a21/lib/log4c/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libftc_client.so")
@@ -77,7 +77,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ftc_server")
     file(RPATH_CHANGE
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ftc_server"
-         OLD_RPATH "/home01/s5104a21/.conda/envs/cosmoflow/lib64:/scratch/s5104a21/lib/mercury2/lib:/scratch/s5104a21/lib/log4c/lib:"
+         OLD_RPATH "/sw/peak/gcc/10.2.0-2/lib64/:/scratch/s5104a21/lib/mercury2/lib:/scratch/s5104a21/lib/log4c/lib:"
          NEW_RPATH "")
     if(CMAKE_INSTALL_DO_STRIP)
       execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ftc_server")

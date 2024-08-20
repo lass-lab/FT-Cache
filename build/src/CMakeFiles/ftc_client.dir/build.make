@@ -69,10 +69,24 @@ include src/CMakeFiles/ftc_client.dir/progress.make
 # Include the compile flags for this target's objects.
 include src/CMakeFiles/ftc_client.dir/flags.make
 
+src/CMakeFiles/ftc_client.dir/ftc.cpp.o: src/CMakeFiles/ftc_client.dir/flags.make
+src/CMakeFiles/ftc_client.dir/ftc.cpp.o: /scratch/s5104a21/FT-Cache/src/ftc.cpp
+src/CMakeFiles/ftc_client.dir/ftc.cpp.o: src/CMakeFiles/ftc_client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc.cpp.o"
+	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/ftc_client.dir/ftc.cpp.o -MF CMakeFiles/ftc_client.dir/ftc.cpp.o.d -o CMakeFiles/ftc_client.dir/ftc.cpp.o -c /scratch/s5104a21/FT-Cache/src/ftc.cpp
+
+src/CMakeFiles/ftc_client.dir/ftc.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ftc_client.dir/ftc.cpp.i"
+	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /scratch/s5104a21/FT-Cache/src/ftc.cpp > CMakeFiles/ftc_client.dir/ftc.cpp.i
+
+src/CMakeFiles/ftc_client.dir/ftc.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ftc_client.dir/ftc.cpp.s"
+	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /scratch/s5104a21/FT-Cache/src/ftc.cpp -o CMakeFiles/ftc_client.dir/ftc.cpp.s
+
 src/CMakeFiles/ftc_client.dir/ftc_client.cpp.o: src/CMakeFiles/ftc_client.dir/flags.make
 src/CMakeFiles/ftc_client.dir/ftc_client.cpp.o: /scratch/s5104a21/FT-Cache/src/ftc_client.cpp
 src/CMakeFiles/ftc_client.dir/ftc_client.cpp.o: src/CMakeFiles/ftc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_client.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_client.cpp.o"
 	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/ftc_client.dir/ftc_client.cpp.o -MF CMakeFiles/ftc_client.dir/ftc_client.cpp.o.d -o CMakeFiles/ftc_client.dir/ftc_client.cpp.o -c /scratch/s5104a21/FT-Cache/src/ftc_client.cpp
 
 src/CMakeFiles/ftc_client.dir/ftc_client.cpp.i: cmake_force
@@ -86,7 +100,7 @@ src/CMakeFiles/ftc_client.dir/ftc_client.cpp.s: cmake_force
 src/CMakeFiles/ftc_client.dir/wrappers.c.o: src/CMakeFiles/ftc_client.dir/flags.make
 src/CMakeFiles/ftc_client.dir/wrappers.c.o: /scratch/s5104a21/FT-Cache/src/wrappers.c
 src/CMakeFiles/ftc_client.dir/wrappers.c.o: src/CMakeFiles/ftc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object src/CMakeFiles/ftc_client.dir/wrappers.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object src/CMakeFiles/ftc_client.dir/wrappers.c.o"
 	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/ftc_client.dir/wrappers.c.o -MF CMakeFiles/ftc_client.dir/wrappers.c.o.d -o CMakeFiles/ftc_client.dir/wrappers.c.o -c /scratch/s5104a21/FT-Cache/src/wrappers.c
 
 src/CMakeFiles/ftc_client.dir/wrappers.c.i: cmake_force
@@ -100,7 +114,7 @@ src/CMakeFiles/ftc_client.dir/wrappers.c.s: cmake_force
 src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o: src/CMakeFiles/ftc_client.dir/flags.make
 src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o: /scratch/s5104a21/FT-Cache/src/ftc_data_mover.cpp
 src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o: src/CMakeFiles/ftc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o"
 	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o -MF CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o.d -o CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o -c /scratch/s5104a21/FT-Cache/src/ftc_data_mover.cpp
 
 src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.i: cmake_force
@@ -114,7 +128,7 @@ src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.s: cmake_force
 src/CMakeFiles/ftc_client.dir/ftc_logging.c.o: src/CMakeFiles/ftc_client.dir/flags.make
 src/CMakeFiles/ftc_client.dir/ftc_logging.c.o: /scratch/s5104a21/FT-Cache/src/ftc_logging.c
 src/CMakeFiles/ftc_client.dir/ftc_logging.c.o: src/CMakeFiles/ftc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object src/CMakeFiles/ftc_client.dir/ftc_logging.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object src/CMakeFiles/ftc_client.dir/ftc_logging.c.o"
 	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT src/CMakeFiles/ftc_client.dir/ftc_logging.c.o -MF CMakeFiles/ftc_client.dir/ftc_logging.c.o.d -o CMakeFiles/ftc_client.dir/ftc_logging.c.o -c /scratch/s5104a21/FT-Cache/src/ftc_logging.c
 
 src/CMakeFiles/ftc_client.dir/ftc_logging.c.i: cmake_force
@@ -128,7 +142,7 @@ src/CMakeFiles/ftc_client.dir/ftc_logging.c.s: cmake_force
 src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.o: src/CMakeFiles/ftc_client.dir/flags.make
 src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.o: /scratch/s5104a21/FT-Cache/src/ftc_comm.cpp
 src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.o: src/CMakeFiles/ftc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.o"
 	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.o -MF CMakeFiles/ftc_client.dir/ftc_comm.cpp.o.d -o CMakeFiles/ftc_client.dir/ftc_comm.cpp.o -c /scratch/s5104a21/FT-Cache/src/ftc_comm.cpp
 
 src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.i: cmake_force
@@ -142,7 +156,7 @@ src/CMakeFiles/ftc_client.dir/ftc_comm.cpp.s: cmake_force
 src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o: src/CMakeFiles/ftc_client.dir/flags.make
 src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o: /scratch/s5104a21/FT-Cache/src/ftc_comm_client.cpp
 src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o: src/CMakeFiles/ftc_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o"
 	cd /scratch/s5104a21/FT-Cache/build/src && /apps/compiler/gcc/10.2.0/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o -MF CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o.d -o CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.o -c /scratch/s5104a21/FT-Cache/src/ftc_comm_client.cpp
 
 src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.i: cmake_force
@@ -155,6 +169,7 @@ src/CMakeFiles/ftc_client.dir/ftc_comm_client.cpp.s: cmake_force
 
 # Object files for target ftc_client
 ftc_client_OBJECTS = \
+"CMakeFiles/ftc_client.dir/ftc.cpp.o" \
 "CMakeFiles/ftc_client.dir/ftc_client.cpp.o" \
 "CMakeFiles/ftc_client.dir/wrappers.c.o" \
 "CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o" \
@@ -165,6 +180,7 @@ ftc_client_OBJECTS = \
 # External object files for target ftc_client
 ftc_client_EXTERNAL_OBJECTS =
 
+src/libftc_client.so: src/CMakeFiles/ftc_client.dir/ftc.cpp.o
 src/libftc_client.so: src/CMakeFiles/ftc_client.dir/ftc_client.cpp.o
 src/libftc_client.so: src/CMakeFiles/ftc_client.dir/wrappers.c.o
 src/libftc_client.so: src/CMakeFiles/ftc_client.dir/ftc_data_mover.cpp.o
@@ -179,7 +195,7 @@ src/libftc_client.so: /scratch/s5104a21/lib/mercury2/lib/libmchecksum.so
 src/libftc_client.so: /scratch/s5104a21/lib/mercury2/lib/libmercury_util.so
 src/libftc_client.so: /scratch/s5104a21/lib/mercury2/lib/libna.so
 src/libftc_client.so: src/CMakeFiles/ftc_client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX shared library libftc_client.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/scratch/s5104a21/FT-Cache/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX shared library libftc_client.so"
 	cd /scratch/s5104a21/FT-Cache/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ftc_client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
