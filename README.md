@@ -1,6 +1,6 @@
 # Fault Tolerant AI Cache (FT_Cache)
 
-[![DOI](https://zenodo.org/badge/844795297.svg)](https://zenodo.org/doi/10.5281/zenodo.13347303)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13347306.svg)](https://doi.org/10.5281/zenodo.13347306)
 
 ## Overview
 
